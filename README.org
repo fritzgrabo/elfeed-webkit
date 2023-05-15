@@ -86,7 +86,14 @@ As always, use =C-h b= to display all defined keys in a buffer.
 
 * Screenshot
 
-[[screenshots/screenshot.png]]
+[[screenshots/screenshot.gif]]
+
+- I start out on the =*elfeed-search*= buffer with a few [[https://irreal.org/blog/][Irreal blog posts]], and with webkit rendering disabled.
+- I press =RET= to open the selected entry "/Completing Org Links/"; it renders as text.
+- I press =t= to toggle on webkit rendering, then =t= one more time to toggle it off again.
+- I press =n= to go to the next entry, "/Moving to Elfeed/"; it renders as text.
+- I press =n= to go to the next entry, "/Captee/": this entry has the =webkit= tag mentioned before, and automatically renders with webkit as a result.
+- I press =q= to quit out to =*elfeed-search*=.
 
 * Related work
 

@@ -2,6 +2,16 @@
 
 Render [[https://github.com/skeeto/elfeed][elfeed]] entries in embedded webkit widgets.
 
+Many feeds render well as text, some don't. Or maybe you're interested
+in a feed entry's dynamic content that doesn't get rendered into the
+feed at all (think comments). Elfeed provides =b= for this case, which
+opens an entry's link in the browser. If you'd rather stay in Emacs
+and not lose the context of elfeed and its key bindings, this package
+allows you to render an entry's link in an embedded webkit widget.
+
+Webkit rendering can be toggled on/off manually, or automatically
+based on an entry's tags.
+
 * Installation
 
 If you use MELPA, an easy way to install this package is via

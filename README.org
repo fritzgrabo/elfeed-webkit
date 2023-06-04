@@ -53,28 +53,37 @@ these maps.
 Alternatively, use the =elfeed-webkit-enable= and =elfeed-webkit-disable=
 commands to turn webkit on or off directly.
 
-** Enable based on entry tags
+** Enable/Disable based on an entry's tags
 
-Elfeed entries can also be rendered with webkit automatically, based
-on the entry's tags. This can be useful if you know that a specific
-feed /never/ renders well in text. See elfeed's [[https://github.com/skeeto/elfeed/tree/master#autotagging][autotagging feature]] for
-how to apply tags to all entries of a given feed.
+Elfeed entries can also be rendered with or without webkit
+automatically, based on an entry's tags. This can be useful if you
+know that a specific feed /never/ renders well in text, or misbehaves
+when rendered with webkit. See elfeed's [[https://github.com/skeeto/elfeed/tree/master#autotagging][autotagging feature]] for how to
+apply tags to all entries of a given feed.
 
-To set up automatic rendering with webkit, run
-=elfeed-webkit-auto-enable-by-tag=.
+To set up automatic rendering with webkit based on an entry's tags,
+run =elfeed-webkit-auto-toggle-by-tag=.
 
-By default, entries with either a =wk= or =webkit= tag will be affected.
+By default, entries with either a =wk= or =webkit= tag will be rendered
+with webkit, even if rendering with webkit is toggled off otherwise.
 The list of tags that triggers webkit is customizable via
-=elfeed-webkit-auto-tags=.
+=elfeed-webkit-auto-enable-tags=.
+
+Likewise, entries with either a =no-wk= or =no-webkit= tag will be
+rendered as text, even if rendering with webkit is toggled on
+otherwise. Again, the list of tags is customizable via
+=elfeed-webkit-auto-disable-tags=.
+
+Here's an example setup:
 
 #+begin_src emacs-lisp
 (use-package elfeed-webkit
   :ensure
   :demand ;; !
   :init
-  (setq elfeed-webkit-auto-tags '(webkit comics))
+  (setq elfeed-webkit-auto-enable-tags '(webkit comics))
   :config
-  (elfeed-webkit-auto-enable-by-tag)
+  (elfeed-webkit-auto-toggle-by-tag)
   :bind (:map elfeed-show-mode-map
               ("%" . elfeed-webkit-toggle)))
 #+end_src

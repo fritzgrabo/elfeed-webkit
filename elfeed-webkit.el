@@ -4,7 +4,7 @@
 
 ;; Author: Fritz Grabo <hello@fritzgrabo.com>
 ;; URL: https://github.com/fritzgrabo/elfeed-webkit
-;; Version: 0.1
+;; Version: 0.2
 ;; Package-Requires: ((emacs "26.1") (elfeed "3.4.1"))
 ;; Keywords: comm
 
@@ -179,27 +179,44 @@ browser defined by `browse-url-generic-program'."
           (x-set-selection 'PRIMARY link)))
       (message "Yanked: %s" link))))
 
-(defvar elfeed-webkit-auto-tags
+(define-obsolete-variable-alias
+  'elfeed-webkit-auto-tags 'elfeed-webkit-auto-enable-tags "0.2")
+
+(defvar elfeed-webkit-auto-enable-tags
   '(webkit wk)
-  "List of tags that will cause an elfeed entry to render with webkit.")
+  "Tags that will cause an elfeed entry to render with webkit.")
+
+(defvar elfeed-webkit-auto-disable-tags
+  '(no-webkit no-wk)
+  "Tags that cause an elfeed entry to render with the original/default method.")
 
 (defun elfeed-webkit--elfeed-show-entry-advice (orig-fun &rest args)
   "Temporarily adjust `elfeed-show-refresh-function', then call ORIG-FUN with ARGS."
   (let ((tags (elfeed-entry-tags (car args)))
-        (original-refresh-function elfeed-show-refresh-function))
-    (when (seq-intersection tags elfeed-webkit-auto-tags)
-      (setq elfeed-show-refresh-function #'elfeed-webkit-refresh--webkit))
+        (current-refresh-function elfeed-show-refresh-function))
+    (when (seq-intersection tags elfeed-webkit-auto-enable-tags)
+      (elfeed-webkit--enable))
+    (when (seq-intersection tags elfeed-webkit-auto-disable-tags)
+      (elfeed-webkit--disable))
     (prog1
         (apply orig-fun args)
-      (setq elfeed-show-refresh-function original-refresh-function))))
+      (setq elfeed-show-refresh-function current-refresh-function))))
 
 ;;;###autoload
-(defun elfeed-webkit-auto-enable-by-tag ()
-  "Automatically render elfeed entries with webkit if they have certain tags.
+(define-obsolete-function-alias
+  'elfeed-webkit-auto-enable-by-tag 'elfeed-webkit-auto-toggle-by-tag "0.2")
 
-If an entry has a tag listed in `elfeed-webkit-auto-tags', render
-it with webkit when it is shown.  Webkit can still be toggled on
-or off manually in the entry's buffer."
+;;;###autoload
+(defun elfeed-webkit-auto-toggle-by-tag ()
+  "Automatically toggle rendering of elfeed entries with webkit on/off.
+
+If an entry has a tag listed in `elfeed-webkit-auto-enable-tags',
+render it with webkit when it is shown.  Likewise, if an entry
+has a tag listed in `elfeed-webkit-auto-disable-tags', render it
+with the original/default method.
+
+Rendering with webkit can still be toggled on or off manually in
+the entry's buffer."
   (interactive)
   (advice-add 'elfeed-show-entry :around #'elfeed-webkit--elfeed-show-entry-advice))
 

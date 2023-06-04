@@ -84,18 +84,19 @@ select few customizations.
 
 Here are some of the more commonly used keys:
 
-| Key | Function                                   |
-|-----+--------------------------------------------|
-| =n= | show next item in elfeed search buffer     |
-| =p= | show previous item in elfeed search buffer |
-| =u= | mark current entry unread                  |
-| =+= | add tag(s) to displayed entry              |
-| =-= | remove tag(s) from displayed entry         |
-| =g= | refresh displayed entry                    |
-| =b= | go back in webkit's browsing history       |
-| =f= | go forward                                 |
-| =v= | visit current webkit URL in a browser      |
-| =y= | yank current webkit URL                    |
+| Key | Function                                             |
+|-----+------------------------------------------------------|
+| =n=   | show next item in elfeed search buffer               |
+| =p=   | show previous item in elfeed search buffer           |
+| =u=   | mark current entry unread                            |
+| =+=   | add tag(s) to displayed entry                        |
+| =-=   | remove tag(s) from displayed entry                   |
+| =g=   | refresh displayed entry                              |
+| =b=   | go back in webkit's browsing history                 |
+| =f=   | go forward                                           |
+| =v=   | visit current webkit URL in a browser                |
+| =y=   | yank current webkit URL                              |
+| =a=   | adjust size of widget to fill entire available space |
 
 As always, use =C-h b= to display all defined keys in a buffer.
 

@@ -56,31 +56,44 @@
   (interactive)
 
   (if (elfeed-webkit--enabled-p)
-      (elfeed-webkit--disable)
-    (elfeed-webkit--enable))
-
-  (when elfeed-show-entry
-    (elfeed-show-entry elfeed-show-entry)))
+      (elfeed-webkit-disable)
+    (elfeed-webkit-enable)))
 
 (defun elfeed-webkit--enabled-p ()
   "Whether elfeed entries are rendered with webkit."
   (eq elfeed-show-refresh-function #'elfeed-webkit-refresh--webkit))
 
-(defun elfeed-webkit--enable ()
+(defun elfeed-webkit-enable ()
   "Render elfeed entries with webkit."
-  (setq elfeed-webkit--original-refresh-function elfeed-show-refresh-function)
-  (setq elfeed-show-refresh-function #'elfeed-webkit-refresh--webkit)
+  (interactive)
+  (elfeed-webkit--enable)
+  (when elfeed-show-entry
+    (elfeed-show-refresh))
   (message "Elfeed: webkit enabled"))
 
-(defun elfeed-webkit--disable ()
+(defun elfeed-webkit--enable ()
+  "Internal function."
+  (when (not (elfeed-webkit--enabled-p))
+    (setq elfeed-webkit--original-refresh-function elfeed-show-refresh-function)
+    (setq elfeed-show-refresh-function #'elfeed-webkit-refresh--webkit)))
+
+(defun elfeed-webkit-disable ()
   "Render elfeed entries with the original/default method."
-  (when (null elfeed-webkit--original-refresh-function)
-    ;; We must have started out with "webkit" as the initial refresh
-    ;; function (never toggled before). Initialize the "original" to
-    ;; switch to with elfeed's default, "mail-style".
-    (setq elfeed-webkit--original-refresh-function #'elfeed-show-refresh--mail-style))
-  (setq elfeed-show-refresh-function elfeed-webkit--original-refresh-function)
+  (interactive)
+  (elfeed-webkit--disable)
+  (when elfeed-show-entry
+    (elfeed-show-refresh))
   (message "Elfeed: webkit disabled"))
+
+(defun elfeed-webkit--disable ()
+  "Internal function."
+  (when (elfeed-webkit--enabled-p)
+    (when (null elfeed-webkit--original-refresh-function)
+      ;; We must have started out with "webkit" as the initial refresh
+      ;; function (never toggled or enabled before). Initialize the
+      ;; "original" to switch to with elfeed's default, "mail-style".
+      (setq elfeed-webkit--original-refresh-function #'elfeed-show-refresh--mail-style))
+    (setq elfeed-show-refresh-function elfeed-webkit--original-refresh-function)))
 
 (defun elfeed-webkit-refresh--webkit ()
   "Update the buffer to match the selected entry, using webkit."
@@ -109,7 +122,7 @@
   "Prepare the buffer for rendering elfeed entries with webkit.
 
 This is split from the actual refresh function because it does
-not need to re-run on `elfeed-show-refresh'."
+not necessarily need to re-run on `elfeed-show-refresh'."
   (elfeed-webkit--kill-xwidgets)
 
   (let ((inhibit-read-only t))

@@ -50,6 +50,9 @@ related keybindings from =xwidget-webkit-mode-map= are superimposed on
 =elfeed-show-mode-map=. Best pick a key that's not bound in either of
 these maps.
 
+Alternatively, use the =elfeed-webkit-enable= and =elfeed-webkit-disable=
+commands to turn webkit on or off directly.
+
 ** Enable based on entry tags
 
 Elfeed entries can also be rendered with webkit automatically, based
